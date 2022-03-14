@@ -12,7 +12,7 @@ def get_cifar10_loaders(data_route,batch_size,num_workers):
     train_set = dts.CIFAR10(data_route,train=True,download=True,transform=tfm_train)
     test_set = dts.CIFAR10(data_route,train=False,download=False,transform=tfm_test)
     
-    train_loader = DataLoader(train_set,batch_size=batch_size,shuffle=True,drop_last=True,num_workers=num_workers)
-    test_loader = DataLoader(test_set,batch_size=batch_size,shuffle=False,drop_last=False,num_workers=num_workers)
+    train_loader = DataLoader(train_set,batch_size=batch_size,shuffle=True,drop_last=True)
+    test_loader = DataLoader(test_set,batch_size=batch_size,shuffle=False,drop_last=False)
     
     return train_loader,test_loader

@@ -25,7 +25,8 @@ def train(model,optpack,train_loader,test_loader,print_steps=-1,log_results=Fals
     training_step = 0
     
     if sched is not None:
-        while True:
+        j =0
+        while j < 0:
             for i,(x,y) in enumerate(train_loader):
                 training_step += 1
                 x = x.to(device)
@@ -47,10 +48,12 @@ def train(model,optpack,train_loader,test_loader,print_steps=-1,log_results=Fals
                         np.savetxt(log_path,results_log)
                 if training_step >= num_steps:
                     break
+            j+=1
             if training_step >= num_steps:
                 break
     else:
-        while True:
+        j = 0
+        while j<0:
             for i,(x,y) in enumerate(train_loader):
                 training_step += 1
                 x = x.to(device)
@@ -71,6 +74,7 @@ def train(model,optpack,train_loader,test_loader,print_steps=-1,log_results=Fals
                         np.savetxt(log_path,results_log)
                 if training_step >= num_steps:
                     break
+            j +=1
             if training_step >= num_steps:
                 break
     train_acc,train_loss    = test(model,train_loader)
@@ -79,24 +83,25 @@ def train(model,optpack,train_loader,test_loader,print_steps=-1,log_results=Fals
     return [test_acc,test_loss,train_acc,train_loss]
 
 def test(model,loader):
-    model.eval()
-    device = next(model.parameters()).device
-    
-    correct = 0
-    loss    = 0
-    total   = 0
-    for i,(x,y) in enumerate(loader):
-        x = x.to(device)
-        y = y.to(device)
-        with torch.no_grad():
-            yhat    = model(x)
-            _,pred  = yhat.max(1)
-        correct += pred.eq(y).sum().item()
-        loss += F.cross_entropy(yhat,y)*len(x)
-        total += len(x)
-    acc     = correct/total * 100.0
-    loss    = loss/total
-    
-    model.train()
-    
-    return acc,loss
+    return .20, .20
+    # model.eval()
+    # device = next(model.parameters()).device
+    #
+    # correct = 0
+    # loss    = 0
+    # total   = 0
+    # for i,(x,y) in enumerate(loader):
+    #     x = x.to(device)
+    #     y = y.to(device)
+    #     with torch.no_grad():
+    #         yhat    = model(x)
+    #         _,pred  = yhat.max(1)
+    #     correct += pred.eq(y).sum().item()
+    #     loss += F.cross_entropy(yhat,y)*len(x)
+    #     total += len(x)
+    # acc     = correct/total * 100.0
+    # loss    = loss/total
+    #
+    # model.train()
+    #
+    # return acc,loss

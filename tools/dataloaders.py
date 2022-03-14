@@ -1,7 +1,7 @@
 import torch
 from tools.datasets import *
 
-data_route      = '/data/'
+data_route= '/data/'
 cifar10_strings = ['vgg16','resnet18','densenet','effnet']
 
 def dataset_loader(model,batch_size=100,num_workers=5):

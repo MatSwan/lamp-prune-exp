@@ -165,14 +165,20 @@ def _compute_lamp_amounts(model,amount):
     """
     unmaskeds = _count_unmasked_weights(model)
     num_surv = int(np.round(unmaskeds.sum()*(1.0-amount)))
-    
+    for w in get_weights(model):
+        print(w)
     flattened_scores = [_normalize_scores(w**2).view(-1) for w in get_weights(model)]
     concat_scores = torch.cat(flattened_scores,dim=0)
+
     topks,_ = torch.topk(concat_scores,num_surv)
     threshold = topks[-1]
     
     # We don't care much about tiebreakers, for now.
+    for score in flattened_scores:
+        print(score)
     final_survs = [torch.ge(score,threshold*torch.ones(score.size()).to(score.device)).sum() for score in flattened_scores]
+    print(final_survs)
+    quit()
     amounts = []
     for idx,final_surv in enumerate(final_survs):
         amounts.append(1.0 - (final_surv/unmaskeds[idx]))
